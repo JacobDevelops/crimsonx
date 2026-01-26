@@ -1,0 +1,35 @@
+# CrimsonX Discord Bot Configuration
+# Note: Secrets (tokens, keys) should be in .env, not here.
+# This file is for non-sensitive, version-controllable settings.
+
+[bot]
+# Application ID from Discord Developer Portal
+# application_id = 123456789
+
+[features]
+levels = false
+moderation = false
+role_menus = false
+welcome = false
+custom_commands = false
+twitch = false
+
+[welcome]
+# Randomized welcome messages. Use {user} as a placeholder for the member mention.
+messages = [
+    "Welcome to The Crimson Den, {user}!",
+    "{user} just joined the crew!",
+    "Glad to have you here, {user}!",
+    "{user} has entered The Crimson Den!",
+    "Welcome aboard, {user}!",
+]
+
+[socials]
+twitch = "https://twitch.tv/0xDC143C"
+youtube = "https://youtube.com/@0xDC143C"
+x = "https://x.com/0xDC143C"
+github = "https://github.com/0xDC143C"
+
+[schedule]
+# Streaming schedule text (update as needed)
+text = "Schedule coming soon!"
