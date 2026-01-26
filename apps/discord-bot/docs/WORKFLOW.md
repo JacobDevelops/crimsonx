@@ -36,15 +36,15 @@ This workflow is designed for **learning Rust** while building a real project. E
 - [Cargo Guide](https://doc.rust-lang.org/cargo/guide/)
 
 ### 0.2 Project Structure Setup
-- [ ] Update `Cargo.toml` with initial dependencies
-- [ ] Create directory structure:
+- [x] Update `Cargo.toml` with initial dependencies
+- [x] Create directory structure:
   ```
   src/
   ├── main.rs           # Entry point
   ├── lib.rs            # Library root (re-exports)
   └── config.rs         # Configuration (start simple)
   ```
-- [ ] Create `.env` file for secrets
+- [x] Create `.env` file for secrets
 - [ ] Create `config/config.toml` with basic settings
 
 **Checkpoint**: `cargo build` succeeds with no errors
