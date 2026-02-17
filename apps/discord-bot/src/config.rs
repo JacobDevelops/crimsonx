@@ -10,6 +10,18 @@ pub struct Config {
     pub welcome_channel_id: Option<ChannelId>,
     pub log_channel_id: Option<ChannelId>,
     pub bot_version: String,
+    // Twitch (Phase 2)
+    pub twitch: Option<TwitchConfig>,
+}
+
+#[derive(Debug, Clone)]
+pub struct TwitchConfig {
+    pub client_id: String,
+    pub client_secret: String,
+    pub channel_id: String,
+    pub live_channel_id: ChannelId,
+    pub live_chat_channel_id: Option<ChannelId>,
+    pub live_role_id: Option<RoleId>,
 }
 
 impl Config {
@@ -17,12 +29,14 @@ impl Config {
     ///
     /// Required:
     /// - `DISCORD_TOKEN` — Bot token from Discord Developer Portal
-    /// - `DATABASE_URL` — SQLite connection string (e.g. "sqlite:crimsonbot.db")
     ///
     /// Optional:
+    /// - `DATABASE_URL` — PostgreSQL connection string
     /// - `AUTOROLE_IDS` — Comma-separated role IDs to assign on join
+    /// - `GUILD_ID` — Guild for instant slash command registration
     /// - `WELCOME_CHANNEL_ID` — Channel for welcome embeds
     /// - `LOG_CHANNEL_ID` — Channel for mod-logs
+    /// - `TWITCH_CLIENT_ID` + `TWITCH_CLIENT_SECRET` + `TWITCH_CHANNEL_ID` + `LIVE_CHANNEL_ID` — Twitch integration
     pub fn from_env() -> Result<Self, Error> {
         let discord_token = std::env::var("DISCORD_TOKEN")
             .map_err(|_| Error::Config("DISCORD_TOKEN environment variable is required".into()))?;
@@ -36,6 +50,8 @@ impl Config {
         let welcome_channel_id = parse_optional_id::<ChannelId>("WELCOME_CHANNEL_ID")?;
         let log_channel_id = parse_optional_id::<ChannelId>("LOG_CHANNEL_ID")?;
 
+        let twitch = TwitchConfig::from_env()?;
+
         Ok(Self {
             discord_token,
             database_url,
@@ -44,7 +60,39 @@ impl Config {
             welcome_channel_id,
             log_channel_id,
             bot_version: env!("CARGO_PKG_VERSION").to_string(),
+            twitch,
         })
+    }
+}
+
+impl TwitchConfig {
+    fn from_env() -> Result<Option<Self>, Error> {
+        let client_id = match std::env::var("TWITCH_CLIENT_ID") {
+            Ok(v) if !v.is_empty() => v,
+            _ => return Ok(None),
+        };
+        let client_secret = std::env::var("TWITCH_CLIENT_SECRET").map_err(|_| {
+            Error::Config(
+                "TWITCH_CLIENT_SECRET is required when TWITCH_CLIENT_ID is set".into(),
+            )
+        })?;
+        let channel_id = std::env::var("TWITCH_CHANNEL_ID").map_err(|_| {
+            Error::Config("TWITCH_CHANNEL_ID is required when TWITCH_CLIENT_ID is set".into())
+        })?;
+        let live_channel_id = parse_optional_id::<ChannelId>("LIVE_CHANNEL_ID")?.ok_or_else(
+            || Error::Config("LIVE_CHANNEL_ID is required when TWITCH_CLIENT_ID is set".into()),
+        )?;
+        let live_chat_channel_id = parse_optional_id::<ChannelId>("LIVE_CHAT_CHANNEL_ID")?;
+        let live_role_id = parse_optional_id::<RoleId>("LIVE_ROLE_ID")?;
+
+        Ok(Some(Self {
+            client_id,
+            client_secret,
+            channel_id,
+            live_channel_id,
+            live_chat_channel_id,
+            live_role_id,
+        }))
     }
 }
 

@@ -1,6 +1,7 @@
 use discord_bot::commands;
 use discord_bot::config::Config;
 use discord_bot::events;
+use discord_bot::integrations;
 use discord_bot::Data;
 use poise::serenity_prelude as serenity;
 use tracing::{error, info, warn};
@@ -103,6 +104,18 @@ async fn main() {
 
                 // Set bot status
                 ctx.set_activity(Some(serenity::ActivityData::watching("the crimson tide")));
+
+                // Start Twitch EventSub if configured
+                if let Some(ref twitch_config) = config.twitch {
+                    info!("Starting Twitch EventSub integration...");
+                    let twitch_ctx = ctx.clone();
+                    let twitch_cfg = twitch_config.clone();
+                    tokio::spawn(async move {
+                        integrations::twitch::start_eventsub(twitch_ctx, twitch_cfg).await;
+                    });
+                } else {
+                    info!("Twitch integration not configured, skipping");
+                }
 
                 Ok(Data {
                     db,

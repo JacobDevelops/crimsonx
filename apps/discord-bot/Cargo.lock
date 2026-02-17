@@ -418,6 +418,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "dotenvy",
+ "futures-util",
  "poise",
  "rand 0.8.5",
  "reqwest",
@@ -427,6 +428,7 @@ dependencies = [
  "sqlx",
  "thiserror 2.0.18",
  "tokio",
+ "tokio-tungstenite",
  "tracing",
  "tracing-subscriber",
 ]
