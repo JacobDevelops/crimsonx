@@ -11,7 +11,6 @@ poise = "0.6"
 rand = "0.8"
 reqwest = { version = "0.12", features = ["json"] }
 serde = { version = "1", features = ["derive"] }
-serde_json = "1"
 serenity = { version = "0.12.5", features = ["client", "gateway", "model", "cache"] }
 sqlx = { version = "0.8", features = ["postgres", "runtime-tokio", "tls-rustls"] }
 thiserror = "2"
@@ -19,3 +18,4 @@ tokio = { version = "1.49", features = ["rt-multi-thread", "macros", "signal"] }
 tokio-tungstenite = { version = "0.21", features = ["rustls-tls-webpki-roots"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+twitch_api = { version = "0.7.2", features = ["helix", "eventsub", "client", "reqwest", "twitch_oauth2"] }

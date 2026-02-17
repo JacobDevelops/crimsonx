@@ -72,16 +72,15 @@ impl TwitchConfig {
             _ => return Ok(None),
         };
         let client_secret = std::env::var("TWITCH_CLIENT_SECRET").map_err(|_| {
-            Error::Config(
-                "TWITCH_CLIENT_SECRET is required when TWITCH_CLIENT_ID is set".into(),
-            )
+            Error::Config("TWITCH_CLIENT_SECRET is required when TWITCH_CLIENT_ID is set".into())
         })?;
         let channel_id = std::env::var("TWITCH_CHANNEL_ID").map_err(|_| {
             Error::Config("TWITCH_CHANNEL_ID is required when TWITCH_CLIENT_ID is set".into())
         })?;
-        let live_channel_id = parse_optional_id::<ChannelId>("LIVE_CHANNEL_ID")?.ok_or_else(
-            || Error::Config("LIVE_CHANNEL_ID is required when TWITCH_CLIENT_ID is set".into()),
-        )?;
+        let live_channel_id =
+            parse_optional_id::<ChannelId>("LIVE_CHANNEL_ID")?.ok_or_else(|| {
+                Error::Config("LIVE_CHANNEL_ID is required when TWITCH_CLIENT_ID is set".into())
+            })?;
         let live_chat_channel_id = parse_optional_id::<ChannelId>("LIVE_CHAT_CHANNEL_ID")?;
         let live_role_id = parse_optional_id::<RoleId>("LIVE_ROLE_ID")?;
 

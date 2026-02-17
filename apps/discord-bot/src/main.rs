@@ -95,7 +95,12 @@ async fn main() {
 
                 // Register slash commands (guild-specific if GUILD_ID set, otherwise global)
                 if let Some(guild_id) = config.guild_id {
-                    poise::builtins::register_in_guild(ctx, &framework.options().commands, guild_id).await?;
+                    poise::builtins::register_in_guild(
+                        ctx,
+                        &framework.options().commands,
+                        guild_id,
+                    )
+                    .await?;
                     info!(guild_id = %guild_id, "Slash commands registered to guild");
                 } else {
                     poise::builtins::register_globally(ctx, &framework.options().commands).await?;
