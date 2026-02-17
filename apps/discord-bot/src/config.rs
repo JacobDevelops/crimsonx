@@ -1,11 +1,12 @@
 use crate::error::Error;
-use serenity::all::{ChannelId, RoleId};
+use serenity::all::{ChannelId, GuildId, RoleId};
 
 #[derive(Debug, Clone)]
 pub struct Config {
     pub discord_token: String,
     pub database_url: String,
     pub autorole_ids: Vec<RoleId>,
+    pub guild_id: Option<GuildId>,
     pub welcome_channel_id: Option<ChannelId>,
     pub log_channel_id: Option<ChannelId>,
     pub bot_version: String,
@@ -31,6 +32,7 @@ impl Config {
 
         let autorole_ids = parse_id_list::<RoleId>("AUTOROLE_IDS")?;
 
+        let guild_id = parse_optional_id::<GuildId>("GUILD_ID")?;
         let welcome_channel_id = parse_optional_id::<ChannelId>("WELCOME_CHANNEL_ID")?;
         let log_channel_id = parse_optional_id::<ChannelId>("LOG_CHANNEL_ID")?;
 
@@ -38,6 +40,7 @@ impl Config {
             discord_token,
             database_url,
             autorole_ids,
+            guild_id,
             welcome_channel_id,
             log_channel_id,
             bot_version: env!("CARGO_PKG_VERSION").to_string(),

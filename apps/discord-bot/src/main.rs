@@ -92,9 +92,14 @@ async fn main() {
             Box::pin(async move {
                 info!(bot = %ready.user.name, guilds = ready.guilds.len(), "Bot is ready!");
 
-                // Register slash commands globally
-                poise::builtins::register_globally(ctx, &framework.options().commands).await?;
-                info!("Slash commands registered globally");
+                // Register slash commands (guild-specific if GUILD_ID set, otherwise global)
+                if let Some(guild_id) = config.guild_id {
+                    poise::builtins::register_in_guild(ctx, &framework.options().commands, guild_id).await?;
+                    info!(guild_id = %guild_id, "Slash commands registered to guild");
+                } else {
+                    poise::builtins::register_globally(ctx, &framework.options().commands).await?;
+                    info!("Slash commands registered globally");
+                }
 
                 // Set bot status
                 ctx.set_activity(Some(serenity::ActivityData::watching("the crimson tide")));
