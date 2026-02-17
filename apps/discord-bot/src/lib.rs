@@ -5,11 +5,11 @@ pub mod error;
 pub mod events;
 pub mod utils;
 
-use sqlx::SqlitePool;
+use sqlx::PgPool;
 
 /// Shared data accessible across all Poise commands and event handlers.
 pub struct Data {
-    pub db: SqlitePool,
+    pub db: PgPool,
     pub config: config::Config,
     pub start_time: std::time::Instant,
 }

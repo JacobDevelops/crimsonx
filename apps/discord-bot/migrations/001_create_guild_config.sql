@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS guild_config (
-    guild_id INTEGER PRIMARY KEY NOT NULL,
+    guild_id BIGINT PRIMARY KEY NOT NULL,
     prefix TEXT DEFAULT '!',
-    welcome_channel_id INTEGER,
-    log_channel_id INTEGER,
-    live_channel_id INTEGER,
-    live_role_id INTEGER,
-    mod_role_id INTEGER
+    welcome_channel_id BIGINT,
+    log_channel_id BIGINT,
+    live_channel_id BIGINT,
+    live_role_id BIGINT,
+    mod_role_id BIGINT
 );
